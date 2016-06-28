@@ -1,0 +1,40 @@
+// 声明是Android程序
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        // 应用的包名
+        applicationId "com.feicuiedu.gitdroid"
+        minSdkVersion 17
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    // 构建类型
+    buildTypes {
+        // 发布版
+        release {
+            // 是否进行混淆
+            minifyEnabled false
+            // 混淆文件的位置
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+// 依赖
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+    // gif
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.16'
+    // pager title
+    compile 'me.relex:circleindicator:1.2.1@aar'
+    // ButterKnife
+    compile 'com.jakewharton:butterknife:7.0.1'
+}
