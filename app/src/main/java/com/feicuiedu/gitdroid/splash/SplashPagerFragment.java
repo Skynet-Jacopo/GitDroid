@@ -58,6 +58,7 @@ public class SplashPagerFragment extends Fragment {
                 break;
             case R.id.indicator:
                 break;
+            
 
         }
     }
