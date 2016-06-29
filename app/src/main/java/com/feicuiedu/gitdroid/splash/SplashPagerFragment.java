@@ -29,16 +29,16 @@ public class SplashPagerFragment extends Fragment {
     ViewPager       mViewPager;
     @Bind(R.id.indicator)
     CircleIndicator mIndicator;
+    //Butterknife绑定颜色(属性动画用)
     @BindColor(R.color.colorGreen)
     int             colorGreen;
     @BindColor(R.color.colorRed)
     int             colorRed;
     @BindColor(R.color.colorYellow)
     int             colorYellow;
+    //ButterKnife 绑定手机图标实现平移,缩放,渐变动画
     @Bind(R.id.content)
     FrameLayout     frameLayout;
-    @Bind(R.id.ivPhoneBlank)
-    ImageView       mIvPhoneBlank;
     @Bind(R.id.ivPhone)
     ImageView       mIvPhone;
     @Bind(R.id.layoutPhone)

@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
+import butterknife.ButterKnife;
+
 public class ActivityUtils {
 
     private WeakReference<Activity> activityWeakReference;
@@ -61,6 +63,7 @@ public class ActivityUtils {
         if (activity == null) return;
         Intent intent = new Intent(activity, clazz);
         activity.startActivity(intent);
+        ButterKnife.bind(activity);
     }
 
     /**
