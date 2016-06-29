@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.feicuiedu.gitdroid.R;
+import com.feicuiedu.gitdroid.splash.pager.Pager0;
+import com.feicuiedu.gitdroid.splash.pager.Pager2;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -54,6 +56,9 @@ public class SplashPagerFragment extends Fragment {
         mViewPager.setAdapter(mAdapter);
         mViewPager.addOnPageChangeListener(mPageChangeListener);
         mIndicator.setViewPager(mViewPager);
+
+        Pager0 pager0 = (Pager0) mAdapter.getView(0);
+        pager0.showAnimation();
     }
 
     private final ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -82,7 +87,10 @@ public class SplashPagerFragment extends Fragment {
 
         @Override
         public void onPageSelected(int position) {
-
+            if (position ==2 ){
+                Pager2 pager2 = (Pager2) mAdapter.getView(2);
+                pager2.showAnimation();
+            }
         }
 
         @Override
