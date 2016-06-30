@@ -7,7 +7,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
 
@@ -48,9 +50,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(toggle);
         //同步
         toggle.syncState();
+        //mToolbar右边三个点
+        mToolbar.inflateMenu(R.menu.mymenu);
 
         //设置mNavigationView的监听事件
         mNavigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mymenu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_settings:
+                Toast.makeText(MainActivity.this, "点急了弄你!", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_settings1:
+                Toast.makeText(MainActivity.this, "刘承宇:刘承宇吃屁!", Toast
+                        .LENGTH_SHORT).show();
+                break;
+            case R.id.action_settings2:
+                Toast.makeText(MainActivity.this, "王智:刘承宇吃屁!", Toast
+                        .LENGTH_SHORT).show();
+                break;
+            case R.id.action_settings3:
+                Toast.makeText(MainActivity.this, "郭勤波:刘承宇吃屁!", Toast
+                        .LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
