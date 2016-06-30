@@ -1,7 +1,9 @@
-package com.feicuiedu.gitdroid;
+package com.feicuiedu.gitdroid.home;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
 
 import butterknife.Bind;
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar        mToolbar;
 
     private ActivityUtils mActivityUtils;
+    private HotRepoFragment mHotRepoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //设置mNavigationView的监听事件
         mNavigationView.setNavigationItemSelectedListener(this);
+
+        mHotRepoFragment = new HotRepoFragment();
+        FragmentManager fragmentManager =getSupportFragmentManager();
+        FragmentTransaction transaction =fragmentManager.beginTransaction();
+        transaction.replace(R.id.container,mHotRepoFragment);
+        transaction.commit();
     }
 
     @Override
