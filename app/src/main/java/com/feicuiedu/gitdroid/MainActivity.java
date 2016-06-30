@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView mNavigationView;//侧滑菜单视图
     @Bind(R.id.drawerLayout)
     DrawerLayout   mDrawerLayout;
+    @Bind(R.id.toolbar)
+    Toolbar        mToolbar;
 
     private ActivityUtils mActivityUtils;
 
@@ -31,7 +35,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onContentChanged() {
         super.onContentChanged();
         ButterKnife.bind(this);
+        //实例化ActivityUtils
         mActivityUtils = new ActivityUtils(this);
+
+        //ActionBar 处理
+        setSupportActionBar(mToolbar);
+        //设置mNavigationView的监听器
+        mNavigationView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle toggle =new ActionBarDrawerToggle(this,
+                mDrawerLayout,mToolbar,R.string.navigation_drawer_open,R
+                .string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        //同步
+        toggle.syncState();
+
         //设置mNavigationView的监听事件
         mNavigationView.setNavigationItemSelectedListener(this);
     }
