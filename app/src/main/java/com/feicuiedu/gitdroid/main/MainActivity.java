@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.home;
+package com.feicuiedu.gitdroid.main;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
+import com.feicuiedu.gitdroid.repo.HotRepoFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Bind(R.id.toolbar)
     Toolbar        mToolbar;
 
-    private ActivityUtils mActivityUtils;
+    private ActivityUtils   mActivityUtils;
     private HotRepoFragment mHotRepoFragment;
 
     @Override

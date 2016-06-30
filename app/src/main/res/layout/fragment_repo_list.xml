@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<in.srain.cube.views.ptr.PtrClassicFrameLayout-->
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
 
-        <!--android:id="@+id/ptrClassicFrameLayout"-->
+        android:id="@+id/ptrClassicFrameLayout"
 
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ListView
             android:id="@+id/lvRepos"
@@ -19,7 +19,7 @@
             android:background="@android:color/white"
             android:divider="@null"
             android:visibility="visible"/>
-    <!--</in.srain.cube.views.ptr.PtrClassicFrameLayout>-->
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
     <!--<TextView-->
         <!--android:id="@+id/emptyView"-->
