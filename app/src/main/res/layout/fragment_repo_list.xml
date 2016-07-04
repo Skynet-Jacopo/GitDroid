@@ -21,21 +21,21 @@
             android:visibility="visible"/>
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
-    <!--<TextView-->
-        <!--android:id="@+id/emptyView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@android:color/white"-->
-        <!--android:gravity="center"-->
-        <!--android:text="@string/no_content"-->
-        <!--android:visibility="gone"/>-->
+    <TextView
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="@string/no_content"
+        android:visibility="gone"/>
 
-    <!--<TextView-->
-        <!--android:id="@+id/errorView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@android:color/white"-->
-        <!--android:gravity="center"-->
-        <!--android:text="@string/refresh_error"-->
-        <!--android:visibility="gone"/>-->
+    <TextView
+        android:id="@+id/errorView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="@string/refresh_error"
+        android:visibility="gone"/>
 </FrameLayout>
