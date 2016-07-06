@@ -1,8 +1,8 @@
-package com.feicuiedu.gitdroid.presenter;
+package com.feicuiedu.gitdroid.repo.pager;
 
 import android.os.AsyncTask;
 
-import com.feicuiedu.gitdroid.view.PtrPageView;
+import com.feicuiedu.gitdroid.repo.pager.view.PtrPageView;
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.Random;
  * <p/>
  * Presenter里做了具体要做的业务(下拉刷新获取数据, 上拉加载更多数据), 以及视图的触发
  */
-public class ReopListPresenter extends MvpNullObjectBasePresenter<PtrPageView> {
+public class LanguagePresenter extends MvpNullObjectBasePresenter<PtrPageView> {
 
     // 这是下拉刷新视图层的业务逻辑-----------------------------------------------------------
     public void loadData() {

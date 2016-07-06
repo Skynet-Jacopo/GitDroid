@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.view;
+package com.feicuiedu.gitdroid.repo.pager.view;
 
 /**
  * 下拉刷新视图抽象接口

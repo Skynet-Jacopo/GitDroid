@@ -11,9 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.feicuiedu.gitdroid.R;
+import com.feicuiedu.gitdroid.commons.ActivityUtils;
 import com.feicuiedu.gitdroid.components.FooterView;
-import com.feicuiedu.gitdroid.presenter.ReopListPresenter;
-import com.feicuiedu.gitdroid.view.PtrPageView;
+import com.feicuiedu.gitdroid.repo.pager.view.PtrPageView;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
@@ -26,14 +26,16 @@ import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.header.StoreHouseHeader;
 
 /**
  * Created by liuqun on 6/30/2016.
  */
-public class RepoListFragment extends MvpFragment<PtrPageView,ReopListPresenter> implements
+public class LanguageFragment extends MvpFragment<PtrPageView,LanguagePresenter> implements
         PtrPageView {
 
 
+    public static final String KEY_LANGUAGE = "key_language";
     @Bind(R.id.lvRepos)
     ListView              mLvRepos;
     @Bind(R.id.ptrClassicFrameLayout)
@@ -45,13 +47,26 @@ public class RepoListFragment extends MvpFragment<PtrPageView,ReopListPresenter>
 
     private ArrayAdapter<String> mAdapter;
     private FooterView           footerView; // 上拉加载更多的视图
+    private ActivityUtils mActivityUtils;
 
-    public static RepoListFragment getInstance(String language) {
-        RepoListFragment fragment = new RepoListFragment();
+    public static LanguageFragment getInstance(String language) {
+        LanguageFragment fragment = new LanguageFragment();
         Bundle           bundle   = new Bundle();
-        bundle.putSerializable("key_language", language);
+        bundle.putSerializable(KEY_LANGUAGE, language);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    private String getLanguage(){
+        return (String) getArguments().getSerializable(KEY_LANGUAGE);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mActivityUtils = new ActivityUtils(this);
+        mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout
+                .simple_list_item_1);
     }
 
     @Nullable
@@ -61,9 +76,10 @@ public class RepoListFragment extends MvpFragment<PtrPageView,ReopListPresenter>
         return view;
     }
 
+    // 重写Mosby库父类MvpFragment的方法,返回当前视图所使用的Presenter对象
     @Override
-    public ReopListPresenter createPresenter() {
-        return new ReopListPresenter();
+    public LanguagePresenter createPresenter() {
+        return new LanguagePresenter();
     }
 
     @Override
@@ -71,23 +87,54 @@ public class RepoListFragment extends MvpFragment<PtrPageView,ReopListPresenter>
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
-        mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout
-                .simple_list_item_1);
         mLvRepos.setAdapter(mAdapter);
 
+        // 初始下拉刷新
+        initPullToRefresh();
+        // 初始上拉加载
+        initLoadMoreScroll();
+        // 如果当前页面没有数据，开始自动刷新
+        if (mAdapter.getCount() == 0){
+            mPtrClassicFrameLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mPtrClassicFrameLayout.autoRefresh();
+                }
+            },200);
+        }
+    }
+
+    private void initPullToRefresh() {
+        // 使用本对象作为key，来记录上一次刷新时间，如果两次下拉间隔太近，不会触发刷新方法
+        mPtrClassicFrameLayout.setLastUpdateTimeRelateObject(this);
+        mPtrClassicFrameLayout.setBackgroundResource(R.color.colorRefresh);
+        //关闭Header所耗时长
+        mPtrClassicFrameLayout.setDurationToCloseHeader(1500);
+
+        // 以下的代码只是一个好玩的Header效果，非什么重要内容
+        StoreHouseHeader header =new StoreHouseHeader(getContext());
+        header.setPadding(0,60,0,60);
+        header.initWithString("I LIKE "+ getLanguage());
+        mPtrClassicFrameLayout.setHeaderView(header);
+        mPtrClassicFrameLayout.addPtrUIHandler(header);
+        //下拉刷新处理
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
+                //执行下拉刷新数据业务
                 getPresenter().loadData();
             }
         });
+    }
 
+    private void initLoadMoreScroll() {
         footerView = new FooterView(getContext());
         // 上拉加载更多(listview滑动动最后的位置了，就可以loadmore)
         Mugen.with(mLvRepos, new MugenCallbacks() {
+            // ListView滚动到底部，触发加载更多，此处要执行加载更多的业务逻辑
             @Override
             public void onLoadMore() {
-                Toast.makeText(getContext(), "loadmore", Toast.LENGTH_SHORT).show();
+                // 执行上拉加载数据业务
                 getPresenter().loadMore();
             }
 

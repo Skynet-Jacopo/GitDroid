@@ -3,11 +3,11 @@ package com.feicuiedu.gitdroid.splash;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.feicuiedu.gitdroid.main.MainActivity;
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
+import com.feicuiedu.gitdroid.login.LoginActivity;
+import com.feicuiedu.gitdroid.main.MainActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnLogin)
     public void login() {
-        Toast.makeText(this, "login", Toast.LENGTH_SHORT).show();
+        mActivityUtils.startActivity(LoginActivity.class);
     }
 
     @OnClick(R.id.btnEnter)

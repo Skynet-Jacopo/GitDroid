@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.feicuiedu.gitdroid.repo.pager.RepoListFragment;
+import com.feicuiedu.gitdroid.repo.pager.LanguageFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class HotRepoPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return RepoListFragment.getInstance(languages.get(position));
+        return LanguageFragment.getInstance(languages.get(position));
     }
 
     @Override

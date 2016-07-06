@@ -11,11 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
+import com.feicuiedu.gitdroid.login.LoginActivity;
+import com.feicuiedu.gitdroid.login.model.CurrentUser;
 import com.feicuiedu.gitdroid.repo.HotRepoFragment;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ActivityUtils   mActivityUtils;
     private HotRepoFragment mHotRepoFragment;
+
+    private     Button    mBtnLogin;
+    private ImageView ivIcon; // 用户头像
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +58,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(mToolbar);
         //设置mNavigationView的监听器
         mNavigationView.setNavigationItemSelectedListener(this);
+        //设置ToolBar左上角切换侧滑菜单的按钮
         ActionBarDrawerToggle toggle =new ActionBarDrawerToggle(this,
                 mDrawerLayout,mToolbar,R.string.navigation_drawer_open,R
                 .string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         //同步
         toggle.syncState();
+        //登录
+        mBtnLogin = ButterKnife.findById(mNavigationView.getHeaderView(0),R
+                .id.btnLogin);
+        mBtnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActivityUtils.startActivity(LoginActivity.class);
+            }
+        });
+        ivIcon =ButterKnife.findById(mNavigationView.getHeaderView(0),R.id.ivIcon);
         //mToolbar右边三个点
         mToolbar.inflateMenu(R.menu.mymenu);
 
@@ -66,6 +86,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction transaction =fragmentManager.beginTransaction();
         transaction.replace(R.id.container,mHotRepoFragment);
         transaction.commit();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // 还没有授权登陆
+        if (CurrentUser.isEmpty()){
+            mBtnLogin.setText(R.string.login_github);
+            return;
+        }
+        // 已经授权登陆
+        mBtnLogin.setText(R.string.switch_account);
+        getSupportActionBar().setTitle(CurrentUser.getUser().getName());
+        // 设置用户头像
+        String photoUrl = CurrentUser.getUser().getAvatar();
+        ImageLoader.getInstance().displayImage(photoUrl,ivIcon);
     }
 
     @Override
