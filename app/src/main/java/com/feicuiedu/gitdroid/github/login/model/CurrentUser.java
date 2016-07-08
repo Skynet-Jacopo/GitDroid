@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.login.model;
+package com.feicuiedu.gitdroid.github.login.model;
 
 /**
  * This class is a very simple implementation to cache current user's information.

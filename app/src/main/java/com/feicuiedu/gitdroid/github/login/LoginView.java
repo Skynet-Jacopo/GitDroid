@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.login;
+package com.feicuiedu.gitdroid.github.login;
 
 import com.hannesdorfmann.mosby.mvp.MvpView;
 

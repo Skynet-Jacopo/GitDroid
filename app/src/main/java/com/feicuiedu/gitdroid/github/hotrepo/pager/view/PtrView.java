@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.repo.pager.view;
+package com.feicuiedu.gitdroid.github.hotrepo.pager.view;
 
 /**
  * 下拉刷新视图抽象接口
@@ -11,7 +11,8 @@ public interface PtrView<T> {
     /** 显示空视图*/
     void showEmptyView();
 
-    /** 刷新数据*/
+    /** 刷新数据
+     * @param t*/
     void refreshData(T t);
     /** 停止刷新*/
     void stopRefresh();

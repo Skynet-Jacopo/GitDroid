@@ -1,11 +1,10 @@
-package com.feicuiedu.gitdroid.repo.pager;
+package com.feicuiedu.gitdroid.github.hotrepo.pager;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,7 +12,9 @@ import android.widget.Toast;
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
 import com.feicuiedu.gitdroid.components.FooterView;
-import com.feicuiedu.gitdroid.repo.pager.view.PtrPageView;
+import com.feicuiedu.gitdroid.github.hotrepo.Language;
+import com.feicuiedu.gitdroid.github.hotrepo.pager.modle.Repo;
+import com.feicuiedu.gitdroid.github.hotrepo.pager.view.LanguageView;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
@@ -29,10 +30,20 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.header.StoreHouseHeader;
 
 /**
- * Created by liuqun on 6/30/2016.
+ * 本Fragment的主要内容是一个ListView，我们通过GitHub API查询某种编程语言最热门的开源库，
+ * 查询结果根据star数量排序。此GitHub API有分页特性，分页索引以1开始，每页默认有30项。
+ * 更多内容可以查阅GitHub API文档。
+ * <p/>
+ * <p/>
+ * 我们使用了三方库android-Ultra-Pull-To-Refresh来实现下拉刷新特性，这是一位中国程序员构建的优秀的开源库。
+ * 你可以自己尝试使用google的SwipeRefreshLayout来替代，这一工作应该是很简单的。
+ * <p/>
+ * <p/>
+ * 至于无穷滚动特性，有很多不同的开源实现。我们使用了一个微型库Mugen的实现来节省时间，
+ * 当然，即使从头自己来实现这一功能也并不困难。
  */
-public class LanguageFragment extends MvpFragment<PtrPageView,LanguagePresenter> implements
-        PtrPageView {
+public class LanguageFragment extends MvpFragment<LanguageView,LanguagePresenter> implements
+        LanguageView {
 
 
     public static final String KEY_LANGUAGE = "key_language";
@@ -45,11 +56,17 @@ public class LanguageFragment extends MvpFragment<PtrPageView,LanguagePresenter>
     @Bind(R.id.errorView)
     TextView              mErrorView;
 
-    private ArrayAdapter<String> mAdapter;
+    private LanguageRepoAdapter mAdapter;
     private FooterView           footerView; // 上拉加载更多的视图
     private ActivityUtils mActivityUtils;
 
-    public static LanguageFragment getInstance(String language) {
+    /**
+     * 获取(每次重新创建)当前Fragment对象
+     * <p/>
+     * 当Fragment需要进行参数传递时，应该使用Bundle进行处理,我们这里就是将语言类型传入了(在获取语言仓库列表数据时要用到)
+     * <p/>
+     */
+    public static LanguageFragment getInstance(Language language) {
         LanguageFragment fragment = new LanguageFragment();
         Bundle           bundle   = new Bundle();
         bundle.putSerializable(KEY_LANGUAGE, language);
@@ -57,16 +74,14 @@ public class LanguageFragment extends MvpFragment<PtrPageView,LanguagePresenter>
         return fragment;
     }
 
-    private String getLanguage(){
-        return (String) getArguments().getSerializable(KEY_LANGUAGE);
+    private Language getLanguage() {
+        return (Language) getArguments().getSerializable(KEY_LANGUAGE);
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityUtils = new ActivityUtils(this);
-        mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout
-                .simple_list_item_1);
+        mAdapter = new LanguageRepoAdapter();
     }
 
     @Nullable
@@ -79,7 +94,7 @@ public class LanguageFragment extends MvpFragment<PtrPageView,LanguagePresenter>
     // 重写Mosby库父类MvpFragment的方法,返回当前视图所使用的Presenter对象
     @Override
     public LanguagePresenter createPresenter() {
-        return new LanguagePresenter();
+        return new LanguagePresenter(getLanguage());
     }
 
     @Override
@@ -122,7 +137,7 @@ public class LanguageFragment extends MvpFragment<PtrPageView,LanguagePresenter>
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 //执行下拉刷新数据业务
-                getPresenter().loadData();
+                getPresenter().refresh();
             }
         });
     }
@@ -164,9 +179,10 @@ public class LanguageFragment extends MvpFragment<PtrPageView,LanguagePresenter>
     }
 
     // 这是上拉加载更多视图层实现------------------------------------------------------
+
     @Override
-    public void addMoreData(List<String> datas) {
-        mAdapter.addAll(datas);
+    public void addMoreData(List<Repo> datas) {
+
     }
 
     @Override
@@ -198,7 +214,7 @@ public class LanguageFragment extends MvpFragment<PtrPageView,LanguagePresenter>
         footerView.showComplete();
     }
 
-    // 这是下拉刷新视图的实现-------------------------------------------------------
+    // 这是下拉刷新视图的实现-----------------------------------------------------
     @Override
     public void showContentView() {
         mPtrClassicFrameLayout.setVisibility(View.VISIBLE);
@@ -221,11 +237,12 @@ public class LanguageFragment extends MvpFragment<PtrPageView,LanguagePresenter>
     }
 
     @Override
-    public void refreshData(List<String> strings) {
+    public void refreshData(List<Repo> datas) {
         mAdapter.clear();
-        mAdapter.addAll(strings);
-        mAdapter.notifyDataSetChanged();
+        if (datas == null) return;
+        mAdapter.addAll(datas);
     }
+
 
     @Override
     public void stopRefresh() {

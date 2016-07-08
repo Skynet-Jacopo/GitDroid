@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.login;
+package com.feicuiedu.gitdroid.github.login;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.webkit.WebViewClient;
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
 import com.feicuiedu.gitdroid.commons.LogUtils;
-import com.feicuiedu.gitdroid.main.MainActivity;
+import com.feicuiedu.gitdroid.github.main.MainActivity;
 import com.feicuiedu.gitdroid.network.GitHubApi;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 

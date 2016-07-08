@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.main;
+package com.feicuiedu.gitdroid.github.main;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -18,9 +18,9 @@ import android.widget.Toast;
 
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
-import com.feicuiedu.gitdroid.login.LoginActivity;
-import com.feicuiedu.gitdroid.login.model.CurrentUser;
-import com.feicuiedu.gitdroid.repo.HotRepoFragment;
+import com.feicuiedu.gitdroid.github.login.LoginActivity;
+import com.feicuiedu.gitdroid.github.login.model.CurrentUser;
+import com.feicuiedu.gitdroid.github.hotrepo.HotRepoFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import butterknife.Bind;

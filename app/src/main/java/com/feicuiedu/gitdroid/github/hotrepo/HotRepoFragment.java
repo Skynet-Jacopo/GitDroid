@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.repo;
+package com.feicuiedu.gitdroid.github.hotrepo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +16,16 @@ import butterknife.ButterKnife;
 
 /**
  * Created by liuqun on 6/30/2016.
+ *
+ * Created by Administrator on 2016/6/30 0030.
+ * <p/>
+ * <p/>最热门仓库Fragment,里面放着不放语言的仓库
+ * <p/>
+ * <p/>本Fragment是被添加到MainActivity中。
+ * <p/>
+ * <p/>它上面有一个ViewPager和一个相对应的TabLayout。
+ * <p/>
+ * <p/>ViewPager上，每一个页面都是一个LanguageFragment
  */
 public class HotRepoFragment extends Fragment {
 
@@ -24,7 +34,6 @@ public class HotRepoFragment extends Fragment {
     @Bind(R.id.viewPager)
     ViewPager mViewPager;
 
-    private HotRepoPagerAdapter mAdapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,8 +46,9 @@ public class HotRepoFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mAdapter =new HotRepoPagerAdapter(getChildFragmentManager());
-        mViewPager.setAdapter(mAdapter);
+        // 注意此处是在Fragment中添加Fragment，属于嵌套Fragment
+        mViewPager.setAdapter(new HotRepoPagerAdapter(getChildFragmentManager(),getContext()));
+        // 将ViewPager绑定到TabLayout上
         mTabLayout.setupWithViewPager(mViewPager);
     }
 

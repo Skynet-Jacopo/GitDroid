@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.repo.pager.view;
+package com.feicuiedu.gitdroid.github.hotrepo.pager.view;
 
 /**
  * Created by liuqun on 7/1/2016.

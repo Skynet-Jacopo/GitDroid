@@ -1,8 +1,9 @@
 package com.feicuiedu.gitdroid.network;
 
 
-import com.feicuiedu.gitdroid.login.model.AccessTokenResult;
-import com.feicuiedu.gitdroid.login.model.User;
+import com.feicuiedu.gitdroid.github.hotrepo.pager.modle.RepoResult;
+import com.feicuiedu.gitdroid.github.login.model.AccessTokenResult;
+import com.feicuiedu.gitdroid.github.login.model.User;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -10,6 +11,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by Administrator on 2016/7/5 0005.
@@ -46,5 +48,15 @@ public interface GitHubApi {
      */
     @GET("user")
     Call<User> getUserInfo();
+
+    /**
+     * @param query  查询参数           java [232323123] items[{},{},{}]
+     * @param pageId 查询页数，从1开始
+     * @return 查询结果
+     */
+    @GET("/search/repositories")
+    Call<RepoResult> searchRepo(
+            @Query("q") String query,
+            @Query("page") int pageId);
 
 }

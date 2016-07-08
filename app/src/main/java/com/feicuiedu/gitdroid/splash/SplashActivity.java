@@ -6,8 +6,8 @@ import android.widget.Button;
 
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
-import com.feicuiedu.gitdroid.login.LoginActivity;
-import com.feicuiedu.gitdroid.main.MainActivity;
+import com.feicuiedu.gitdroid.github.login.LoginActivity;
+import com.feicuiedu.gitdroid.github.main.MainActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

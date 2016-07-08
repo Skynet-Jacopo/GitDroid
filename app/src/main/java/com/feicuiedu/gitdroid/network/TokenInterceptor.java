@@ -1,7 +1,7 @@
 package com.feicuiedu.gitdroid.network;
 
 
-import com.feicuiedu.gitdroid.login.model.CurrentUser;
+import com.feicuiedu.gitdroid.github.login.model.CurrentUser;
 
 import java.io.IOException;
 

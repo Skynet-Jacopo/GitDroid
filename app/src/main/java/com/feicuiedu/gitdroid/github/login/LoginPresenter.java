@@ -1,8 +1,8 @@
-package com.feicuiedu.gitdroid.login;
+package com.feicuiedu.gitdroid.github.login;
 
-import com.feicuiedu.gitdroid.login.model.AccessTokenResult;
-import com.feicuiedu.gitdroid.login.model.CurrentUser;
-import com.feicuiedu.gitdroid.login.model.User;
+import com.feicuiedu.gitdroid.github.login.model.AccessTokenResult;
+import com.feicuiedu.gitdroid.github.login.model.CurrentUser;
+import com.feicuiedu.gitdroid.github.login.model.User;
 import com.feicuiedu.gitdroid.network.GitHubApi;
 import com.feicuiedu.gitdroid.network.GitHubClient;
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
