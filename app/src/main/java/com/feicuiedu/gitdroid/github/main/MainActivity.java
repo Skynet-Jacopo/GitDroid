@@ -2,6 +2,7 @@ package com.feicuiedu.gitdroid.github.main;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
+import com.feicuiedu.gitdroid.favorite.FavoriteFragment;
 import com.feicuiedu.gitdroid.github.login.LoginActivity;
 import com.feicuiedu.gitdroid.github.login.model.CurrentUser;
 import com.feicuiedu.gitdroid.github.hotrepo.HotRepoFragment;
@@ -36,7 +38,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar        mToolbar;
 
     private ActivityUtils   mActivityUtils;
+    // 热门仓库页面Fragment
     private HotRepoFragment mHotRepoFragment;
+    // 我的收藏页面
+    private FavoriteFragment mFavoriteFragment;
 
     private     Button    mBtnLogin;
     private ImageView ivIcon; // 用户头像
@@ -82,10 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mNavigationView.setNavigationItemSelectedListener(this);
 
         mHotRepoFragment = new HotRepoFragment();
-        FragmentManager fragmentManager =getSupportFragmentManager();
-        FragmentTransaction transaction =fragmentManager.beginTransaction();
-        transaction.replace(R.id.container,mHotRepoFragment);
-        transaction.commit();
+        replaceFragment(mHotRepoFragment);
     }
 
     @Override
@@ -137,6 +139,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.github_hot_repo:
                 mActivityUtils.showToast("最热门");
+                if (! mHotRepoFragment.isAdded()) {
+                    replaceFragment(mHotRepoFragment);
+                }
                 break;
             case R.id.github_hot_coder:
                 mActivityUtils.showToast("开发者");
@@ -146,6 +151,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.arsenal_my_repo:
                 mActivityUtils.showToast("我的收藏");
+                if (mFavoriteFragment == null) mFavoriteFragment = new FavoriteFragment();
+                if (! mFavoriteFragment.isAdded()) {
+                    replaceFragment(mFavoriteFragment);
+                }
                 break;
             case R.id.arsenal_recommend:
                 mActivityUtils.showToast("推荐");
@@ -157,6 +166,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mActivityUtils.showToast("分享");
                 break;
         }
+        mDrawerLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
         //返回true,代表该菜单项变为checked状态
         return true;
     }
@@ -172,5 +188,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else {
             super.onBackPressed();
         }
+    }
+    // 替换不同的内容Fragment
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.commit();
     }
 }

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,9 +13,14 @@ import android.widget.Toast;
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
 import com.feicuiedu.gitdroid.components.FooterView;
+import com.feicuiedu.gitdroid.favorite.dao.DbHelper;
+import com.feicuiedu.gitdroid.favorite.dao.LocalRepoDao;
+import com.feicuiedu.gitdroid.favorite.model.LocalRepo;
+import com.feicuiedu.gitdroid.favorite.model.RepoConverter;
 import com.feicuiedu.gitdroid.github.hotrepo.Language;
 import com.feicuiedu.gitdroid.github.hotrepo.pager.modle.Repo;
 import com.feicuiedu.gitdroid.github.hotrepo.pager.view.LanguageView;
+import com.feicuiedu.gitdroid.github.repo.RepoInfoActivity;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
@@ -103,7 +109,25 @@ public class LanguageFragment extends MvpFragment<LanguageView,LanguagePresenter
         ButterKnife.bind(this, view);
 
         mLvRepos.setAdapter(mAdapter);
+        mLvRepos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // 获取当前click的仓库
+                Repo repo = mAdapter.getItem(position);
+                RepoInfoActivity.open(getContext(), repo);
+            }
+        });
 
+        mLvRepos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Repo      repo      = mAdapter.getItem(position);
+                LocalRepo localRepo = RepoConverter.convert(repo);
+                // 将当前长按的Repo(已转换为LocalRepo)添加到本地仓库表
+                new LocalRepoDao(DbHelper.getInstance(getContext())).createOrUpdate(localRepo);
+                mActivityUtils.showToast(R.string.set_favorite_success);
+                return true;
+            }
+        });
         // 初始下拉刷新
         initPullToRefresh();
         // 初始上拉加载
@@ -129,7 +153,7 @@ public class LanguageFragment extends MvpFragment<LanguageView,LanguagePresenter
         // 以下的代码只是一个好玩的Header效果，非什么重要内容
         StoreHouseHeader header =new StoreHouseHeader(getContext());
         header.setPadding(0,60,0,60);
-        header.initWithString("I LIKE "+ getLanguage());
+        header.initWithString("I LIKE "+ getLanguage().getName());
         mPtrClassicFrameLayout.setHeaderView(header);
         mPtrClassicFrameLayout.addPtrUIHandler(header);
         //下拉刷新处理
@@ -182,7 +206,8 @@ public class LanguageFragment extends MvpFragment<LanguageView,LanguagePresenter
 
     @Override
     public void addMoreData(List<Repo> datas) {
-
+        if (datas == null) return;
+        mAdapter.addAll(datas);
     }
 
     @Override

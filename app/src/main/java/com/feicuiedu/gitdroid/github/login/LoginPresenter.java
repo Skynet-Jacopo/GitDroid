@@ -3,8 +3,8 @@ package com.feicuiedu.gitdroid.github.login;
 import com.feicuiedu.gitdroid.github.login.model.AccessTokenResult;
 import com.feicuiedu.gitdroid.github.login.model.CurrentUser;
 import com.feicuiedu.gitdroid.github.login.model.User;
-import com.feicuiedu.gitdroid.network.GitHubApi;
-import com.feicuiedu.gitdroid.network.GitHubClient;
+import com.feicuiedu.gitdroid.github.network.GitHubApi;
+import com.feicuiedu.gitdroid.github.network.GitHubClient;
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import retrofit2.Call;

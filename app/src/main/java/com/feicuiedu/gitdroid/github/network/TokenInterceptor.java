@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.network;
+package com.feicuiedu.gitdroid.github.network;
 
 
 import com.feicuiedu.gitdroid.github.login.model.CurrentUser;

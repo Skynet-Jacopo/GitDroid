@@ -15,7 +15,7 @@ import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.commons.ActivityUtils;
 import com.feicuiedu.gitdroid.commons.LogUtils;
 import com.feicuiedu.gitdroid.github.main.MainActivity;
-import com.feicuiedu.gitdroid.network.GitHubApi;
+import com.feicuiedu.gitdroid.github.network.GitHubApi;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import butterknife.Bind;

@@ -4,7 +4,7 @@ import com.feicuiedu.gitdroid.github.hotrepo.Language;
 import com.feicuiedu.gitdroid.github.hotrepo.pager.modle.Repo;
 import com.feicuiedu.gitdroid.github.hotrepo.pager.modle.RepoResult;
 import com.feicuiedu.gitdroid.github.hotrepo.pager.view.LanguageView;
-import com.feicuiedu.gitdroid.network.GitHubClient;
+import com.feicuiedu.gitdroid.github.network.GitHubClient;
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.List;
@@ -47,7 +47,9 @@ public class LanguagePresenter extends MvpNullObjectBasePresenter<LanguageView> 
 
     // 这是上拉加载更多视图层的业务逻辑------------------------------------------------
     public void loadMore() {
-
+        getView().showLoadMoreLoading();
+        mResultCall = GitHubClient.getInstance().searchRepo("language:"+language.getPath(),nextPage);
+        mResultCall.enqueue(loadMoreCallback);
     }
 
     private Callback<RepoResult> mResultCallback = new Callback<RepoResult>() {
@@ -75,6 +77,34 @@ public class LanguagePresenter extends MvpNullObjectBasePresenter<LanguageView> 
         public void onFailure(Call<RepoResult> call, Throwable t) {
             getView().stopRefresh(); // 视图停止刷新
             getView().showErroView(t.getMessage());
+        }
+    };
+
+    //上拉刷新的回调
+    private Callback<RepoResult> loadMoreCallback =new Callback<RepoResult>() {
+        @Override
+        public void onResponse(Call<RepoResult> call, Response<RepoResult> response) {
+            getView().hideLoadMore();
+            RepoResult result =response.body();
+            if (result == null) {
+                getView().showErroView("结果为空");
+                return;
+            }
+            // 没有更多数据了
+            if(result.getTotalCount() <= 0){
+                getView().showLoadMoreEnd();
+                return;
+            }
+            // 取出当前搜索的语言下，所有仓库
+            List<Repo> repoList = result.getRepoList();
+            getView().addMoreData(repoList);
+            nextPage ++;
+        }
+
+        @Override
+        public void onFailure(Call<RepoResult> call, Throwable t) {
+            getView().hideLoadMore();
+            getView().showLoadMoreErro(t.getMessage());
         }
     };
 }
